@@ -1,6 +1,7 @@
 @echo off
 call settings
 
+call stop-tmng
 echo ===^> Starting TMNG
 echo ==^> rsync TMNG
 pushd %tmng_path%
@@ -24,7 +25,7 @@ if "%railsenv%"=="" (
 
 echo source ~/.profile > Putty
 echo source /etc/profile >> Putty
-echo kill -SIGTERM $(lsof -i tcp:3000 -t) 2^> /dev/null >> Putty
+echo kill -SIGKILL $(lsof -i tcp:3000 -t) 2^> /dev/null >> Putty
 echo cd /vagrant/apps/ticket_machine/ >> Putty
 echo bundle install ^>/dev/null >> Putty
 echo bundle exec bundle install ^>/dev/null >> Putty
@@ -35,7 +36,7 @@ echo sleep 5 >> Putty
 
 echo source ~/.profile > Putty1
 echo source /etc/profile >> Putty1
-echo kill -SIGTERM $(lsof -i tcp:3103 -t) 2^> /dev/null >> Putty1
+echo kill -SIGKILL $(lsof -i tcp:3103 -t) 2^> /dev/null >> Putty1
 echo cd /vagrant/apis/shop_svr/ >> Putty1
 echo bundle install ^>/dev/null >> Putty1
 echo bundle exec bundle install ^>/dev/null >> Putty1
@@ -46,7 +47,7 @@ echo sleep 5 >> Putty1
 
 echo source ~/.profile > Putty2
 echo source /etc/profile >> Putty2
-echo kill -SIGTERM $(lsof -i tcp:3106 -t) 2^> /dev/null >> Putty2
+echo kill -SIGKILL $(lsof -i tcp:3106 -t) 2^> /dev/null >> Putty2
 echo cd /vagrant/apis/schedule_svr/ >> Putty2
 echo bundle install ^>/dev/null >> Putty2
 echo bundle exec bundle install ^>/dev/null >> Putty2
@@ -57,7 +58,7 @@ echo sleep 5 >> Putty2
 
 echo source ~/.profile > Putty3
 echo source /etc/profile >> Putty3
-echo kill -SIGTERM $(lsof -i tcp:9292 -t) 2^> /dev/null >> Putty3
+echo kill -SIGKILL $(lsof -i tcp:9292 -t) 2^> /dev/null >> Putty3
 echo sleep 5 >> Putty3
 echo cd /vagrant/apps/ticket_machine/ >> Putty3
 echo bundle install ^>/dev/null >> Putty3

@@ -1,6 +1,7 @@
 @echo off
 call settings
 
+call stop-all-servers
 echo ===^> Stopping Vagrants
 
 pushd %tmng_path%

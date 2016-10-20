@@ -1,6 +1,7 @@
 @echo off
 call settings
 
+call stop-api
 echo ===^> Starting API
 echo ==^> rsync API
 pushd %api_path%
@@ -22,7 +23,7 @@ if "%railsenv%"=="" (
 )
 
 
-echo kill -SIGTERM $(lsof -i tcp:3000 -t) 2^> /dev/null > PuttyA
+echo kill -SIGKILL $(lsof -i tcp:3000 -t) 2^> /dev/null > PuttyA
 echo source ~/.profile >> PuttyA
 echo source /etc/profile >> PuttyA
 echo cd /vagrant/ >> PuttyA
