@@ -2,7 +2,7 @@
 call settings
 
 echo ===^> Opening SSH on TMNG
-mode %terminal_width%
+call library :terminal_init TMNG - Terminal
 pushd %tmng_path%
 vagrant ssh
 popd

@@ -14,6 +14,11 @@ for /f "tokens=3,4 delims=, " %%F IN ('vagrant status --machine-readable') DO (
 popd
 goto :eof
 
+:terminal_init
+mode %terminal_width%
+title %*
+goto :eof
+
 :run
 call settings
 call %*

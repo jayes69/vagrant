@@ -2,7 +2,7 @@
 call settings
 
 echo ===^> Opening SSH
-mode %terminal_width%
+call library :terminal_init API - Terminal
 pushd %api_path%
 vagrant ssh
 popd
