@@ -1,6 +1,10 @@
 @echo off
 call settings
-
+call library :vagrant_status %api_path%
+if "%state%" NEQ "running" (
+  echo ===^> API already stopped
+  goto :eof
+)
 echo ===^> Stopping API
 echo function wait() { lsof -i tcp:3000 -t; if [ $? -eq 0 ]; then sleep 1; else exit; fi; } > PuttyAK
 echo kill -SIGINT $(lsof -i tcp:3000 -t) 2^> /dev/null >> PuttyAK
