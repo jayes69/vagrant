@@ -9,3 +9,6 @@ set api_path=C:\Devel\projekte\tmng_api
 REM Enter the desired buffer width of the terminal
 REM opened by terminal-api.bat and terminal-tmng.bat
 set terminal_width=150
+
+REM Set this to on to disable automatical batch script update.
+set vg_debug=off

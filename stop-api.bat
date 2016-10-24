@@ -6,7 +6,7 @@ if "%state%" NEQ "running" (
   goto :eof
 )
 echo ===^> Stopping API
-echo function wait() { lsof -i tcp:3000 -t; if [ $? -eq 0 ]; then sleep 1; else exit; fi; } > PuttyAK
+echo function wait() { lsof -i tcp:3000 -t ^>/dev/null 2^>/dev/null; if [ $? -eq 0 ]; then sleep 1; else exit; fi; } > PuttyAK
 echo kill -SIGINT $(lsof -i tcp:3000 -t) 2^> /dev/null >> PuttyAK
 echo for i in {1..5}; do wait; done >> PuttyAK
 echo echo "Server didn't stop after five seconds. Waiting ten seconds..." >> PuttyAK

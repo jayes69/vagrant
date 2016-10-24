@@ -19,6 +19,13 @@ mode %terminal_width%
 title %*
 goto :eof
 
+:irb_init
+vagrant ssh -c "/usr/bin/env bash -c 'cd %1 && gem list -i pry-rails'" >NUL
+if errorlevel EQ 1 (
+    vagrant ssh -c "/usr/bin/env bash -c 'cd %1 && gem install pry-rails" >NUL
+)
+goto :eof
+
 :run
 call settings
 call %*
