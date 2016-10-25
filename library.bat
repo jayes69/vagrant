@@ -19,6 +19,12 @@ mode %terminal_width%
 title %*
 goto :eof
 
+:vagrant_version
+for /f "tokens=2" %%F IN ('vagrant --version') DO (
+  SET vagrant_version=%%F
+)
+goto :eof
+
 :run
 call settings
 call %*

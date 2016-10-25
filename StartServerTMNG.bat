@@ -2,11 +2,8 @@
 call settings
 
 call stop-tmng
+call rsync-tmng
 echo ===^> Starting TMNG
-echo ==^> rsync TMNG
-pushd %tmng_path%
-vagrant rsync >NUL 2>NUL
-popd
 
 echo ==^> Starting TMNG Servers
 
@@ -31,7 +28,7 @@ echo bundle install ^>/dev/null >> Putty
 echo bundle exec bundle install ^>/dev/null >> Putty
 echo echo -ne '\033]0;TicketMachine - %railsenv%\007' >> Putty
 echo echo TicketMachine Enviroment: %railsenv% >> Putty
-echo rails s puma -e %railsenv% >> Putty
+echo rails s -e %railsenv% >> Putty
 echo sleep 5 >> Putty
 
 echo source ~/.profile > Putty1

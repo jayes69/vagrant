@@ -1,3 +1,3 @@
 @echo off
-call StartServerAPI
-call StartServerTMNG
+call StartServerAPI %*
+call StartServerTMNG %*
