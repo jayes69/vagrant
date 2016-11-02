@@ -24,6 +24,13 @@ for /f "tokens=2" %%F IN ('vagrant --version') DO (
   SET vagrant_version=%%F
 )
 goto :eof
+for /f %%x in ('wmic path win32_utctime get /format:list ^| findstr "="') do set %%x
+set date=%Day%.%Month%.%Year%
+set time=%Hour%:%Minute%:%Second%
+
+:date
+
+goto :eof
 
 :run
 call settings

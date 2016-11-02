@@ -18,5 +18,7 @@ if "%pathes_set%" == "" (
     echo ^[DEBUG^] This script is running in debug mode.
     echo ^[DEBUG^] Init-Script will not update automatically.
   )
+
+  call rsync-all reset
 )
 
