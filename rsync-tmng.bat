@@ -15,7 +15,8 @@ if "%vg_autocommit%" NEQ "" (
   echo ===^> Executing Auto-commit
   call library :date
   pushd %tmng_path%
-  git commit -am "Auto-Commit for RSync at %date% %time%"
+  for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set git_branch=%%i
+  git commit -am "Auto-Commit at %date% %time% on %git_branch%"
   popd
 )
 
