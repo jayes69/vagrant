@@ -33,9 +33,12 @@ echo rm /tmp/puttya.sh >>  PuttyA
 echo bash --login bundle exec rails s -b 0.0.0.0 -e %railsenv% >> PuttyA
 REM echo if ^[ $? -ne 0 ^]^; then read -n1 -p"Press any key to continue"; fi >> PuttyA
 echo EOF>> PuttyA
-echo echo Exec >> PuttyA
 echo screen -dmS tmng-api bash /tmp/puttya.sh >> PuttyA
-echo screen -list >> PuttyA
+echo screen -wipe ^>/dev/null >> PuttyA
+echo function wait() { lsof -i tcp:3000 -t ^>/dev/null 2^>/dev/null; if [ $? -gt 0 ]; then sleep 1; else exit; fi; } >> PuttyA
+echo echo ==\^> Waiting for Ports to be blocked >> PuttyA
+echo for i in {1..20}; do wait; done >> PuttyA
+echo screen -rx tmng-api >> PuttyA
 
 ansicon plink.exe -t -ssh api.ticketmachine.dev -P 22 -l "vagrant" -pw "vagrant" -m PuttyA
 del PuttyA
