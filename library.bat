@@ -24,15 +24,11 @@ for /f "tokens=2" %%F IN ('vagrant --version') DO (
   SET vagrant_version=%%F
 )
 goto :eof
+
+:date
 for /f %%x in ('wmic path win32_utctime get /format:list ^| findstr "="') do set %%x
 set date=%Day%.%Month%.%Year%
 set time=%Hour%:%Minute%:%Second%
-
-:cmd-init
-set GIT_SSH=%~dp0\plink.exe
-
-:date
-
 goto :eof
 
 :run
