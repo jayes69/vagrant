@@ -28,6 +28,9 @@ for /f %%x in ('wmic path win32_utctime get /format:list ^| findstr "="') do set
 set date=%Day%.%Month%.%Year%
 set time=%Hour%:%Minute%:%Second%
 
+:cmd-init
+set GIT_SSH=%~dp0\plink.exe
+
 :date
 
 goto :eof
