@@ -37,7 +37,7 @@ echo screen -wipe ^>/dev/null >> Putty
 echo function wait() { lsof -i tcp:3000 -t ^>/dev/null 2^>/dev/null; if [ $? -gt 0 ]; then sleep 1; else exit; fi; } >> Putty
 echo echo ==\^> Waiting for Ports to be blocked >> Putty
 echo for i in {1..20}; do wait; done >> Putty
-echo screen -rx tmng-api >> Putty
+echo screen -rx tmng-app >> Putty
 
 echo cat ^<^<EOF ^> /tmp/putty1.sh > Putty1
 echo source ~/.profile >> Putty1
