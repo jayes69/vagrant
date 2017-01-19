@@ -15,3 +15,6 @@ set vg_autocommit=
 
 REM Set this to on to disable automatical batch script update.
 set vg_debug=off
+
+REM Set this to TRUE to prevent rsync before a test
+set test_norsync=FALSE
