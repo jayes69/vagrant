@@ -10,21 +10,19 @@ if "%1" NEQ "force" (
 )
 call library :vagrant_version
 
+echo ===^> Rsyncing API
 if "%vg_autocommit%" NEQ "" (
-  echo ===^> Executing Auto-commit
-  call library :date
+  echo ==^> Executing Auto-commit
   pushd %api_path%
-  for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set git_branch=%%i
-  git commit -am "Auto-Commit at %date% %time% on %git_branch%"
+  git add *
   popd
 )
 
-echo ===^> Rsyncing API
 pushd %api_path%
 IF "%vagrant_version%" == "1.8.6" (
   echo ==^> Applying quickfix for vagrant/issue:7910
   vagrant ssh -c "if [ $(find /vagrant/log/ -maxdepth 1 -type f | wc -l) -gt 1 ]; then echo Deleting log directory; rm -rf /vagrant/log/*; fi;"
 )
 echo ==^> Rsyncing...
-vagrant rsync 
+vagrant rsync
 popd
