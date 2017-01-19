@@ -13,8 +13,11 @@ set terminal_width=150
 REM Do autocommit if vg_autocommit is set to a non-empty value
 set vg_autocommit=
 
-REM Set this to on to disable automatical batch script update.
+REM Set this to 'on' to disable automatical batch script update.
 set vg_debug=off
 
-REM Set this to TRUE to prevent rsync before a test
-set test_norsync=FALSE
+REM Set this to 'off' to prevent rsync before a test
+set test_rsync=on
+
+REM Set this to on to 'off' to skip the pause command after a test
+set test_pause=off

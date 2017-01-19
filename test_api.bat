@@ -1,17 +1,8 @@
 @echo off
 call settings
+call test_init %*
 
-REM PARSING ENVIRONMENT
-set _t_api_norsync="FALSE"
-IF "%1" EQU "norsync" (
-    set _t_api_norsync="TRUE"
-    shift
-)
-IF "test_norsync" EQU "TRUE" (
-    set _t_api_norsync="TRUE"
-)
-
-IF %_t_api_norsync% EQU "FALSE" (
+IF "%_t_norsync%" EQU "FALSE" (
   call rsync-api force
   call rsync-tmng force
 ) ELSE (
@@ -23,3 +14,8 @@ plink.exe -t -ssh api.ticketmachine.dev -P 22 -l "vagrant" -pw "vagrant" bash -l
 
 echo ===^> Executing Tests in APIv2
 ansicon plink.exe -t -ssh api.ticketmachine.dev -P 22 -l "vagrant" -pw "vagrant" bash -l -c 'bundle exec rspec'
+
+IF "%_t_pause%" EQU "TRUE" (
+  echo ===^> Test completed...
+  pause
+)
