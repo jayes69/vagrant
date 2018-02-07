@@ -40,5 +40,20 @@ echo echo ==\^> Waiting for Ports to be blocked >> PuttyA
 echo for i in {1..20}; do wait; done >> PuttyA
 echo screen -rx tmng-api >> PuttyA
 
-ansicon plink.exe -t -ssh api.ticketmachine.dev -P 22 -l "vagrant" -pw "vagrant" -m PuttyA
+call :run PuttyA
 del PuttyA
+GOTO :eof
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %api_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
+GOTO :eof

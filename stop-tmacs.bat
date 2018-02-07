@@ -1,0 +1,32 @@
+@echo off
+call settings
+
+call library :vagrant_status %tmacs_path%
+IF "%state%" == "running" (
+  echo ===^> Stopping Server
+  REM Join Server Processes with timeout.
+  set SERVER_PORT=3000
+  call :stop-server
+  goto :eof
+) ELSE (
+  echo ===^> TMACS already stopped
+  goto :eof
+)
+
+:stop-server
+echo ==^> Waiting for Server on Port %SERVER_PORT%
+echo PORT="%SERVER_PORT%" > PuttyTM
+echo function wait() { lsof -i tcp:$PORT -t ^>/dev/null 2^>/dev/null; if [ $? -eq 0 ]; then sleep 1; else exit; fi; } >> PuttyTM
+echo kill -SIGINT $(lsof -i tcp:$PORT -t) 2^>/dev/null >> PuttyTM
+echo for i in {1..5}; do wait; done >> PuttyTM
+echo echo "Server didn't stop after five seconds. Sending SIGTERM and wait 10 seconds..." >> PuttyTM
+echo kill -SIGTERM $(lsof -i tcp:$PORT -t) 2^>/dev/null >> PuttyTM
+echo lsof -i tcp:$PORT -t >> PuttyTM
+echo for i in {1..10}; do wait; done >> PuttyTM
+echo echo "Server didn't stop after ten seconds. Waiting thirty seconds..." >> PuttyTM
+echo for i in {1..30}; do wait; done >> PuttyTM
+echo kill -SIGKILL $(lsof -i tcp:$PORT -t) 2^>/dev/null >> PuttyTM
+echo echo "Server didn't stop after thirty seconds. Killed them" >> PuttyTM
+plink.exe -t -ssh tmacs-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\PuttyTM"
+del PuttyTM
+goto :eof

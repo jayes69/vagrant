@@ -16,5 +16,20 @@ echo echo "Server didn't stop after ten seconds. Waiting thirty seconds..." >> P
 echo for i in {1..30}; do wait; done >> PuttyAK
 echo kill -SIGKILL $(lsof -i tcp:3000 -t) 2^>/dev/null >> PuttyAK
 echo echo "Server didn't stop after thirty seconds. Killed them" >> PuttyAK
-plink.exe -t -ssh api.ticketmachine.dev -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\PuttyAK"
+call :run PuttyAK
 del PuttyAK
+goto :eof
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %tmng_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
+GOTO :eof

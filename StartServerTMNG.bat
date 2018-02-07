@@ -99,18 +99,35 @@ echo echo ==\^> Waiting for Ports to be blocked >> Putty3
 echo for i in {1..20}; do wait; done >> Putty3
 echo screen -rx tmng-faye >> Putty3
 
-ansicon plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\Putty"
-ansicon plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\Putty1"
-ansicon plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\Putty2"
-ansicon plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\Putty3"
+call :run Putty
+call :run Putty1
+call :run Putty2
+call :run Putty3
 
 echo Initializing TMNG
-echo wget http://tmng-development:3000/ ^>^> /dev/null ^|^| true > Putty4
-echo wget http://tmng-development:3000/customer/kb ^>^> /dev/null ^|^| true >> Putty4
-ansicon plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\Putty4" >NUL
+echo wget http://localhost:3000/ ^>^> /dev/null ^|^| true > Putty4
+echo wget http://localhost:3000/customer/kb ^>^> /dev/null ^|^| true >> Putty4
+call :run Putty4
 
 del Putty
 del Putty1
 del Putty2
 del Putty3
 del Putty4
+
+GOTO eof
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %tmng_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
+GOTO :eof
+:eof

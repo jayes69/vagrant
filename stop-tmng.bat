@@ -9,7 +9,7 @@ IF "%state%" == "running" (
   echo kill -SIGINT $(lsof -i tcp:3103 -t^) 2^> /dev/null >> PuttyTK
   echo kill -SIGINT $(lsof -i tcp:3106 -t^) 2^> /dev/null >> PuttyTK
   echo kill -SIGINT $(lsof -i tcp:9292 -t^) 2^> /dev/null >> PuttyTK
-  plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\PuttyTK"
+  call :run PuttyTK
   del PuttyTK
 
   REM Join Server Processes with timeout.
@@ -41,6 +41,23 @@ echo echo "Server didn't stop after ten seconds. Waiting thirty seconds..." >> P
 echo for i in {1..30}; do wait; done >> PuttyTK
 echo kill -SIGKILL $(lsof -i tcp:$PORT -t) 2^>/dev/null >> PuttyTK
 echo echo "Server didn't stop after thirty seconds. Killed them" >> PuttyTK
-plink.exe -t -ssh tmng-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\PuttyTK"
+call :run PuttyTK
 del PuttyTK
+goto :eof
+
+:run
+set __DATA=%cd%\%1
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %tmng_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
 goto :eof

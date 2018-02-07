@@ -1,0 +1,18 @@
+cat <<-EOF > /tmp/puttya.sh 
+kill -SIGKILL $(lsof -i tcp:3000 -t) 2> /dev/null 
+source ~/.profile 
+source /etc/profile 
+cd /vagrant/ 
+bundle install >/dev/null 
+bundle exec bundle install >/dev/null 
+echo -ne '\033]0;TicketMachine - API - development\007' 
+echo TicketMachine Enviroment: development 
+rm /tmp/puttya.sh 
+bash --login bundle exec rails s -b 0.0.0.0 -e development 
+EOF
+screen -dmS tmng-tmacs bash /tmp/puttya.sh 
+screen -wipe >/dev/null 
+function wait() { lsof -i tcp:3000 -t >/dev/null 2>/dev/null; if [ $? -gt 0 ]; then sleep 1; else exit; fi; } 
+echo ==\> Waiting for Ports to be blocked 
+for i in {1..20}; do wait; done 
+screen -rx tmng-tmacs 
