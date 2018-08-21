@@ -24,8 +24,8 @@ echo source ~/.profile >> Putty
 echo source /etc/profile >> Putty
 echo kill -SIGKILL $(lsof -i tcp:3000 -t) 2^> /dev/null >> Putty
 echo cd /vagrant/apps/ticket_machine/ >> Putty
-echo bundle install ^>/dev/null >> Putty
-echo bundle exec bundle install ^>/dev/null >> Putty
+REM echo bundle install ^>/dev/null >> Putty
+REM echo bundle exec bundle install ^>/dev/null >> Putty
 echo echo -ne '\033]0;TicketMachine - %railsenv%\007' >> Putty
 echo echo TicketMachine Enviroment: %railsenv% >> Putty
 echo rm /tmp/putty.sh >> Putty
@@ -44,8 +44,8 @@ echo source ~/.profile >> Putty1
 echo source /etc/profile >> Putty1
 echo kill -SIGKILL $(lsof -i tcp:3103 -t) 2^> /dev/null >> Putty1
 echo cd /vagrant/apis/shop_svr/ >> Putty1
-echo bundle install ^>/dev/null >> Putty1
-echo bundle exec bundle install ^>/dev/null >> Putty1
+REM echo bundle install ^>/dev/null >> Putty1
+REM echo bundle exec bundle install ^>/dev/null >> Putty1
 echo echo -ne '\033]0;ShopSvr - %railsenv%\007' >> Putty1
 echo echo ShopSvr Enviroment: %railsenv% >> Putty1
 echo rm /tmp/putty1.sh >> Putty
@@ -64,8 +64,8 @@ echo source ~/.profile >> Putty2
 echo source /etc/profile >> Putty2
 echo kill -SIGKILL $(lsof -i tcp:3106 -t) 2^> /dev/null >> Putty2
 echo cd /vagrant/apis/schedule_svr/ >> Putty2
-echo bundle install ^>/dev/null >> Putty2
-echo bundle exec bundle install ^>/dev/null >> Putty2
+REM echo bundle install ^>/dev/null >> Putty2
+REM echo bundle exec bundle install ^>/dev/null >> Putty2
 echo echo -ne '\033]0;ScheduleSvr - %railsenv%\007' >> Putty2
 echo echo Schedule Enviroment: %railsenv% >> Putty2
 echo rm /tmp/putty2.sh >> Putty2
@@ -85,8 +85,8 @@ echo source /etc/profile >> Putty3
 echo kill -SIGKILL $(lsof -i tcp:9292 -t) 2^> /dev/null >> Putty3
 echo sleep 5 >> Putty3
 echo cd /vagrant/apps/ticket_machine/ >> Putty3
-echo bundle install ^>/dev/null >> Putty3
-echo bundle exec bundle install ^>/dev/null >> Putty3
+REM echo bundle install ^>/dev/null >> Putty3
+REM echo bundle exec bundle install ^>/dev/null >> Putty3
 echo echo -ne '\033]0;Faye - %railsenv%\007' >> Putty3
 echo echo Faye Enviroment: %railsenv% >> Putty3
 echo rm /tmp/putty3.sh >> Putty3

@@ -27,6 +27,22 @@ echo echo "Server didn't stop after ten seconds. Waiting thirty seconds..." >> P
 echo for i in {1..30}; do wait; done >> PuttyTM
 echo kill -SIGKILL $(lsof -i tcp:$PORT -t) 2^>/dev/null >> PuttyTM
 echo echo "Server didn't stop after thirty seconds. Killed them" >> PuttyTM
-plink.exe -t -ssh tmacs-development -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\PuttyTM"
+call :run PuttyTM
 del PuttyTM
 goto :eof
+
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %tmacs_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
+GOTO :eof
+:eof

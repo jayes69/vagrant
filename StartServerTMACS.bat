@@ -40,5 +40,20 @@ echo echo ==\^> Waiting for Ports to be blocked >> PuttyM
 echo for i in {1..20}; do wait; done >> PuttyM
 echo screen -rx tmng-tmacs >> PuttyM
 
-ansicon plink.exe -t -ssh tmacs-development -P 22 -l "vagrant" -pw "vagrant" -m PuttyM
+call :run PuttyM
 del PuttyA
+
+:run
+set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
+pushd %tmacs_path%
+vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
+popd
+SET /p __IP=<%__IPPATH%
+DEL %__IPPATH%
+IF "%__IPPATH%" == "" (
+  ECHO "Failed to detect running vagrant instance... Skipping command."
+  GOTO :eof
+)
+ansicon plink.exe -t -ssh %__IP% -P 22 -l "vagrant" -pw "vagrant" -m "%cd%\%1"
+GOTO :eof
+:eof

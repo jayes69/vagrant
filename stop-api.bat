@@ -22,7 +22,7 @@ goto :eof
 
 :run
 set __IPPATH=%TMP%\vgpath%RANDOM%.tmp
-pushd %tmng_path%
+pushd %api_path%
 vagrant ssh -c "ip address show eth1 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'" 2>>NUL >%__IPPATH%
 popd
 SET /p __IP=<%__IPPATH%
